@@ -67,7 +67,7 @@ public class RatingDialog {
         rotationratingbar_main.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar ratingBar, float rating) {
-                if (ratingBar.getRating() < 4.0f) {
+                if (ratingBar.getRating() < 5.0f) {
                     setRatingFace(false);
                 } else {
                     setRatingFace(true);
@@ -81,7 +81,7 @@ public class RatingDialog {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                main.animate().scaleY(0).scaleX(0).alpha(0).rotation(-1800).setDuration(600).setListener(new Animator.AnimatorListener() {
+                main.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
 
@@ -119,7 +119,7 @@ public class RatingDialog {
             rotationratingbar_main.clearAnimation();
             rotationratingbar_main.setRating(defRating);
             setRatingFace(true);
-            main.animate().scaleY(1).scaleX(1).rotation(1800).alpha(1).setDuration(600).setListener(new Animator.AnimatorListener() {
+            main.animate().scaleY(1).scaleX(1).rotation(1080).alpha(1).setDuration(600).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
 
@@ -166,7 +166,7 @@ public class RatingDialog {
     }
 
     public void closeDialog() {
-        main.animate().scaleY(0).scaleX(0).alpha(0).rotation(-1800).setDuration(600).setListener(new Animator.AnimatorListener() {
+        main.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 

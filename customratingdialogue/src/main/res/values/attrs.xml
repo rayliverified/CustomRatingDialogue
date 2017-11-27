@@ -2,14 +2,14 @@
 <resources>
 
     <declare-styleable name="BaseRatingBar">
-        <attr name="numStars" format="integer"/>
-        <attr name="rating" format="float"/>
-        <attr name="starPadding" format="integer"/>
-        <attr name="drawableEmpty" format="reference"/>
-        <attr name="drawableFilled" format="reference"/>
-        <attr name="touchable" format="boolean"/>
-        <attr name="clearRatingEnabled" format="boolean"/>
-        <attr name="starWidth" format="dimension"/>
-        <attr name="starHeight" format="dimension"/>
+        <attr name="rating_numStars" format="integer"/>
+        <attr name="rating_rating" format="float"/>
+        <attr name="rating_starPadding" format="integer"/>
+        <attr name="rating_drawableEmpty" format="reference"/>
+        <attr name="rating_drawableFilled" format="reference"/>
+        <attr name="rating_touchable" format="boolean"/>
+        <attr name="rating_clearRatingEnabled" format="boolean"/>
+        <attr name="rating_starWidth" format="dimension"/>
+        <attr name="rating_starHeight" format="dimension"/>
     </declare-styleable>
 </resources>

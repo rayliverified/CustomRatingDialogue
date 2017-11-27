@@ -63,15 +63,15 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
         super(context, attrs, defStyleAttr);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseRatingBar);
-        float rating = typedArray.getFloat(R.styleable.BaseRatingBar_rating, mRating);
-        mNumStars = typedArray.getInt(R.styleable.BaseRatingBar_numStars, mNumStars);
-        mPadding = typedArray.getInt(R.styleable.BaseRatingBar_starPadding, mPadding);
-        mStarWidth = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_starWidth, 0);
-        mStarHeight = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_starHeight, 0);
-        mEmptyDrawable = typedArray.getDrawable(R.styleable.BaseRatingBar_drawableEmpty);
-        mFilledDrawable = typedArray.getDrawable(R.styleable.BaseRatingBar_drawableFilled);
-        mIsTouchable = typedArray.getBoolean(R.styleable.BaseRatingBar_touchable, mIsTouchable);
-        mClearRatingEnabled = typedArray.getBoolean(R.styleable.BaseRatingBar_clearRatingEnabled, mClearRatingEnabled);
+        float rating = typedArray.getFloat(R.styleable.BaseRatingBar_rating_rating, mRating);
+        mNumStars = typedArray.getInt(R.styleable.BaseRatingBar_rating_numStars, mNumStars);
+        mPadding = typedArray.getInt(R.styleable.BaseRatingBar_rating_starPadding, mPadding);
+        mStarWidth = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_rating_starWidth, 0);
+        mStarHeight = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_rating_starHeight, 0);
+        mEmptyDrawable = typedArray.getDrawable(R.styleable.BaseRatingBar_rating_drawableEmpty);
+        mFilledDrawable = typedArray.getDrawable(R.styleable.BaseRatingBar_rating_drawableFilled);
+        mIsTouchable = typedArray.getBoolean(R.styleable.BaseRatingBar_rating_touchable, mIsTouchable);
+        mClearRatingEnabled = typedArray.getBoolean(R.styleable.BaseRatingBar_rating_clearRatingEnabled, mClearRatingEnabled);
         typedArray.recycle();
 
         verifyParamsValue();
