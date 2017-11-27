@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplication().getApplicationContext();
         setContentView(R.layout.activity_main);
 
-        mRatingDialog = new RatingDialog(MainActivity.this);
+        mRatingDialog = new RatingDialog(this);
         mRatingDialog.setRatingDialogListener(new RatingDialog.RatingDialogInterFace() {
             @Override
             public void onDismiss() {

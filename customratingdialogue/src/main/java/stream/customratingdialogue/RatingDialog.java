@@ -17,7 +17,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RatingDialog {
 
-    private Context context;
+    private Context mContext;
     private Dialog dialog;
     private RelativeLayout main;
     private ImageView btnCacncel, ratingFace;
@@ -29,19 +29,19 @@ public class RatingDialog {
     private int defRating = 0;
     RatingDialogInterFace mRatingDialogListener;
 
-    public RatingDialog(Context ctx) {
-        this.context = ctx;
-        pre = ctx.getSharedPreferences("rateData", MODE_PRIVATE);
+    public RatingDialog(Context context) {
+        mContext = context;
+        pre = mContext.getSharedPreferences("rateData", MODE_PRIVATE);
         edit = pre.edit();
-        dialog = new Dialog(context);
+        dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogmain);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        btnCacncel = (ImageView) dialog.findViewById(R.id.btnCacncel);
-        ratingFace = (ImageView) dialog.findViewById(R.id.ratingFace);
-        main = (RelativeLayout) dialog.findViewById(R.id.main);
-        rotationratingbar_main = (RotationRatingBar) dialog.findViewById(R.id.rotationratingbar_main);
-        btnSubmit = (TextView) dialog.findViewById(R.id.btnSubmit);
+        btnCacncel = dialog.findViewById(R.id.btnCacncel);
+        ratingFace = dialog.findViewById(R.id.ratingFace);
+        main = dialog.findViewById(R.id.main);
+        rotationratingbar_main = dialog.findViewById(R.id.rotationratingbar_main);
+        btnSubmit = dialog.findViewById(R.id.btnSubmit);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -129,7 +129,7 @@ public class RatingDialog {
                 public void onAnimationEnd(Animator animator) {
                     main.clearAnimation();
                     rotationratingbar_main.setVisibility(View.VISIBLE);
-                    rotationratingbar_main.startAnimation(AnimationUtils.loadAnimation(context, R.anim.bounce_amn));
+                    rotationratingbar_main.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.bounce_amn));
                 }
 
                 @Override
