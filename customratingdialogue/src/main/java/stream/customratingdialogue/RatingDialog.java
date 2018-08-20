@@ -17,17 +17,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RatingDialog {
 
+    SharedPreferences pre;
+    SharedPreferences.Editor edit;
+    RatingDialogInterFace mRatingDialogListener;
     private Context mContext;
     private Dialog dialog;
     private RelativeLayout main;
     private ImageView btnCacncel, ratingFace;
     private RotationRatingBar rotationratingbar_main;
     private TextView btnSubmit;
-    SharedPreferences pre;
-    SharedPreferences.Editor edit;
     private boolean isEnable = true;
     private int defRating = 0;
-    RatingDialogInterFace mRatingDialogListener;
 
     public RatingDialog(Context context) {
         mContext = context;
@@ -145,15 +145,14 @@ public class RatingDialog {
         }
     }
 
+    public boolean getEnable() {
+        return pre.getBoolean("enb", true);
+    }
 
     public void setEnable(boolean isEnable) {
 
         edit.putBoolean("enb", isEnable);
         edit.commit();
-    }
-
-    public boolean getEnable() {
-        return pre.getBoolean("enb", true);
     }
 
     private void setRatingFace(boolean isTrue) {

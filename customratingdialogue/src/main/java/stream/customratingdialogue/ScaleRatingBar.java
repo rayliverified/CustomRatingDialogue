@@ -2,10 +2,11 @@ package stream.customratingdialogue;
 
 import android.content.Context;
 import android.os.Handler;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import androidx.annotation.Nullable;
 
 public class ScaleRatingBar extends BaseRatingBar {
 

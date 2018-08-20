@@ -4,34 +4,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="290dp"
-    android:scaleY="0"
+    android:alpha="0"
     android:scaleX="0"
-    android:alpha="0">
+    android:scaleY="0">
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="5dp"
         android:layout_above="@+id/btnSubmit"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
         android:src="@drawable/ribonl"/>
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginRight="5dp"
         android:layout_above="@+id/btnSubmit"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
         android:src="@drawable/ribonr"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-50dp"
+        android:layout_below="@+id/ratingFace"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="-50dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_below="@+id/ratingFace"
         android:background="@drawable/layout_bg">
 
         <ImageView
@@ -46,11 +46,11 @@
             android:id="@+id/btnCacncel"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="15dp"
             android:layout_marginRight="12dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/cancel"
-            android:alpha="0.5"/>
+            android:alpha="0.5"
+            android:src="@drawable/cancel"/>
 
         <LinearLayout
             android:id="@+id/content_layout"
@@ -62,11 +62,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="12dp"
+                android:gravity="center"
                 android:text="Do you love this app?"
-                android:textSize="22sp"
                 android:textColor="#2c3e50"
+                android:textSize="22sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -81,8 +81,8 @@
                 android:id="@+id/rotationratingbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="6dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="6dp"
                 android:gravity="center"
                 android:visibility="invisible">
@@ -95,13 +95,13 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/submit_bg"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
+        android:text="Review Now!"
         android:textColor="#ffffff"
         android:textSize="28sp"
-        android:text="Review Now!"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-smallcaps"
-        android:background="@drawable/submit_bg"/>
+        android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/ratingFace"

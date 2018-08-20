@@ -1,21 +1,22 @@
 package stream.customratingdialogue;
 
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.DrawableRes;
 
 interface SimpleRatingBar {
 
-    void setNumStars(int numStars);
-
     int getNumStars();
 
-    void setRating(float rating);
+    void setNumStars(int numStars);
 
     float getRating();
 
-    void setStarPadding(int ratingPadding);
+    void setRating(float rating);
 
     int getStarPadding();
+
+    void setStarPadding(int ratingPadding);
 
     void setEmptyDrawable(Drawable drawable);
 

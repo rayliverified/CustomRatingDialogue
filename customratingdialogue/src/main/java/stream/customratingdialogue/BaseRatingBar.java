@@ -3,9 +3,6 @@ package stream.customratingdialogue;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,17 +12,16 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
 
-    public interface OnRatingChangeListener {
-        void onRatingChange(BaseRatingBar ratingBar, float rating);
-    }
-
     public static final String TAG = "SimpleRatingBar";
-
     private static final int MAX_CLICK_DISTANCE = 5;
     private static final int MAX_CLICK_DURATION = 200;
-
+    protected List<PartialView> mPartialViews;
     private int mNumStars;
     private int mPadding = 0;
     private int mStarWidth;
@@ -42,8 +38,6 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
     private Drawable mFilledDrawable;
 
     private OnRatingChangeListener mOnRatingChangeListener;
-
-    protected List<PartialView> mPartialViews;
 
     public BaseRatingBar(Context context) {
         this(context, null);
@@ -151,6 +145,11 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
     }
 
     @Override
+    public int getNumStars() {
+        return mNumStars;
+    }
+
+    @Override
     public void setNumStars(int numStars) {
         if (numStars <= 0) {
             return;
@@ -164,8 +163,8 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
     }
 
     @Override
-    public int getNumStars() {
-        return mNumStars;
+    public float getRating() {
+        return mRating;
     }
 
     @Override
@@ -192,8 +191,8 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
     }
 
     @Override
-    public float getRating() {
-        return mRating;
+    public int getStarPadding() {
+        return mPadding;
     }
 
     @Override
@@ -207,11 +206,6 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
         for (PartialView partialView : mPartialViews) {
             partialView.setPadding(mPadding, mPadding, mPadding, mPadding);
         }
-    }
-
-    @Override
-    public int getStarPadding() {
-        return mPadding;
     }
 
     @Override
@@ -337,11 +331,15 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
         this.mIsTouchable = touchable;
     }
 
+    public boolean isClearRatingEnabled() {
+        return mClearRatingEnabled;
+    }
+
     public void setClearRatingEnabled(boolean enabled) {
         this.mClearRatingEnabled = enabled;
     }
 
-    public boolean isClearRatingEnabled() {
-        return mClearRatingEnabled;
+    public interface OnRatingChangeListener {
+        void onRatingChange(BaseRatingBar ratingBar, float rating);
     }
 }
