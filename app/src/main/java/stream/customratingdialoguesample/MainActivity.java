@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         mRatingDialog = new RatingDialog(this);
         mRatingDialog.setRatingDialogListener(new RatingDialog.RatingDialogInterFace() {
             @Override
+
             public void onDismiss() {
                 Log.d("RATELISTERNER", "onDismiss");
             }

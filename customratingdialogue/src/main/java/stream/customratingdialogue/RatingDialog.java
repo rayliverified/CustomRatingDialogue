@@ -35,7 +35,7 @@ public class RatingDialog {
         edit = pre.edit();
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogmain);
+        dialog.setContentView(R.layout.layout_dialog_rating);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         btnCacncel = dialog.findViewById(R.id.btnCacncel);
         ratingFace = dialog.findViewById(R.id.ratingFace);
@@ -161,7 +161,6 @@ public class RatingDialog {
         } else {
             ratingFace.setImageResource(R.drawable.favorite2);
         }
-
     }
 
     public void closeDialog() {
