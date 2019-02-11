@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import stream.customratingdialogue.RatingDialog;
@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView textView = findViewById(R.id.text);
-        textView.setOnClickListener(new View.OnClickListener() {
+        Button mBtnAction = findViewById(R.id.btn_action);
+        mBtnAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mRatingDialog.showDialog();

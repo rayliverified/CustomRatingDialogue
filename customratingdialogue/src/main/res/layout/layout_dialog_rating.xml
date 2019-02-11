@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="290dp"
     android:alpha="0"
     android:scaleX="0"
-    android:scaleY="0">
+    android:scaleY="0"
+    tools:alpha="1"
+    tools:scaleX="1"
+    tools:scaleY="1">
 
     <ImageView
         android:layout_width="30dp"
@@ -13,7 +17,8 @@
         android:layout_above="@+id/btnSubmit"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/ribonl" />
+        android:src="@drawable/ribonl"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
         android:layout_width="30dp"
@@ -21,7 +26,8 @@
         android:layout_above="@+id/btnSubmit"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/ribonr" />
+        android:src="@drawable/ribonr"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,7 +90,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="6dp"
                 android:gravity="center"
-                android:visibility="invisible"></stream.customratingdialogue.RotationRatingBar>
+                android:visibility="invisible"/>
         </LinearLayout>
     </RelativeLayout>
 
