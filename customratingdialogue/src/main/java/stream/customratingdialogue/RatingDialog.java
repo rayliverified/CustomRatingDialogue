@@ -9,22 +9,29 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class RatingDialog {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     SharedPreferences pre;
     SharedPreferences.Editor edit;
     RatingDialogInterFace mRatingDialogListener;
     private Context mContext;
     private Dialog dialog;
-    private RelativeLayout main;
+    private FrameLayout main;
     private ImageView btnCacncel, ratingFace;
-    private RotationRatingBar rotationratingbar_main;
+    private ScaleRatingBar rotationratingbar_main;
     private TextView btnSubmit;
     private boolean isEnable = true;
     private int defRating = 0;
@@ -37,11 +44,11 @@ public class RatingDialog {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_rating);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        btnCacncel = dialog.findViewById(R.id.btnCacncel);
-        ratingFace = dialog.findViewById(R.id.ratingFace);
-        main = dialog.findViewById(R.id.main);
-        rotationratingbar_main = dialog.findViewById(R.id.rotationratingbar_main);
-        btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        btnCacncel = dialog.findViewById(R.id.btn_cancel);
+        ratingFace = dialog.findViewById(R.id.img_rating_header);
+        main = dialog.findViewById(R.id.layout_dialog_rating);
+        rotationratingbar_main = dialog.findViewById(R.id.rating_bar);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {

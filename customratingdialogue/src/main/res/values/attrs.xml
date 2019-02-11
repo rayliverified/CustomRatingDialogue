@@ -4,7 +4,7 @@
     <declare-styleable name="BaseRatingBar">
         <attr name="rating_numStars" format="integer" />
         <attr name="rating_rating" format="float" />
-        <attr name="rating_starPadding" format="integer" />
+        <attr name="rating_starPadding" format="dimension" />
         <attr name="rating_drawableEmpty" format="reference" />
         <attr name="rating_drawableFilled" format="reference" />
         <attr name="rating_touchable" format="boolean" />

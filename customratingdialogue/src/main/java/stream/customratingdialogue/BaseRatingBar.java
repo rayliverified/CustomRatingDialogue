@@ -59,7 +59,7 @@ public class BaseRatingBar extends LinearLayout implements SimpleRatingBar {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseRatingBar);
         float rating = typedArray.getFloat(R.styleable.BaseRatingBar_rating_rating, mRating);
         mNumStars = typedArray.getInt(R.styleable.BaseRatingBar_rating_numStars, mNumStars);
-        mPadding = typedArray.getInt(R.styleable.BaseRatingBar_rating_starPadding, mPadding);
+        mPadding = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_rating_starPadding, mPadding);
         mStarWidth = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_rating_starWidth, 0);
         mStarHeight = typedArray.getDimensionPixelSize(R.styleable.BaseRatingBar_rating_starHeight, 0);
         mEmptyDrawable = typedArray.getDrawable(R.styleable.BaseRatingBar_rating_drawableEmpty);
