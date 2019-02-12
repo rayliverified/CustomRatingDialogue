@@ -17,7 +17,7 @@
         android:layout_height="30dp"
         android:layout_gravity="bottom|left"
         android:layout_marginBottom="60dp"
-        android:src="@drawable/bg_ribbon_left"
+        app:srcCompat="@drawable/bg_ribbon_left"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
@@ -25,7 +25,7 @@
         android:layout_height="30dp"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="60dp"
-        android:src="@drawable/bg_ribbon_right"
+        app:srcCompat="@drawable/bg_ribbon_right"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <RelativeLayout
