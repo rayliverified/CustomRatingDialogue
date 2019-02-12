@@ -12,7 +12,7 @@
     tools:scaleX="1"
     tools:scaleY="1">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="bottom|left"
@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/bg_ribbon_left"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="bottom|right"
@@ -36,16 +36,16 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/bg_layout">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_top_bar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
-            android:background="@drawable/bg_header"
+            app:srcCompat="@drawable/bg_header"
             android:orientation="vertical"
             tools:ignore="ContentDescription" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_cancel"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -102,24 +102,25 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <TextView
+    <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:background="@drawable/bg_submit"
+        android:background="@drawable/bg_submit_selector"
         android:gravity="center"
         android:text="Review Now"
         android:textColor="#ffffff"
         android:textSize="28dp"
         android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage" />
+        android:elevation="0dp"
+        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_rating_header"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal|top"
-        android:src="@drawable/favorite"
+        app:srcCompat="@drawable/favorite"
         tools:ignore="ContentDescription" />
 </FrameLayout>
