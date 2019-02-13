@@ -11,8 +11,6 @@ import stream.customratingdialogue.RatingDialog;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RatingDialog mRatingDialog;
-
     private Context mContext;
 
     @Override
@@ -21,30 +19,30 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplication().getApplicationContext();
         setContentView(R.layout.activity_main);
 
-        mRatingDialog = new RatingDialog(this);
-        mRatingDialog.setRatingDialogListener(new RatingDialog.RatingDialogInterFace() {
-            @Override
-
-            public void onDismiss() {
-                Log.d("RATELISTERNER", "onDismiss");
-            }
-
-            @Override
-            public void onSubmit(float rating) {
-                Log.d("RATELISTERNER", "onSubmit " + rating);
-            }
-
-            @Override
-            public void onRatingChanged(float rating) {
-                Log.d("RATELISTERNER", "onRatingChanged " + rating);
-            }
-        });
-
         Button mBtnAction = findViewById(R.id.btn_action);
         mBtnAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRatingDialog.showDialog();
+                RatingDialog.Builder ratingDialog = new RatingDialog.Builder(MainActivity.this)
+                        .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
+                            @Override
+
+                            public void onDismiss() {
+                                Log.d("RATELISTERNER", "onDismiss");
+                            }
+
+                            @Override
+                            public void onSubmit(float rating) {
+                                Log.d("RATELISTERNER", "onSubmit " + rating);
+                            }
+
+                            @Override
+                            public void onRatingChanged(float rating) {
+                                Log.d("RATELISTERNER", "onRatingChanged " + rating);
+                            }
+                        })
+                        .build();
+                ratingDialog.show();
             }
         });
     }
