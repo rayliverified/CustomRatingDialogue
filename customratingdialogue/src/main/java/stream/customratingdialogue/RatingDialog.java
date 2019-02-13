@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Parcel;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -50,7 +53,8 @@ public class RatingDialog {
     private Dialog dialog;
     private FrameLayout mLayoutMain;
     private AppCompatImageView mRatingHeaderImage;
-    private AppCompatImageView mBtnCancel;
+    private AppCompatImageView mHeaderBackground;
+    private AppCompatImageView mBtnClose;
     private ScaleRatingBar mRatingBarScale;
     private TextView mBtnSubmit;
     private boolean isEnable = true;
@@ -65,9 +69,14 @@ public class RatingDialog {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
-        mBtnCancel = dialog.findViewById(R.id.btn_cancel);
-        mRatingHeaderImage = dialog.findViewById(R.id.img_rating_header);
         mLayoutMain = dialog.findViewById(R.id.layout_dialog_rating);
+        mRatingHeaderImage = dialog.findViewById(R.id.img_rating_header);
+        mHeaderBackground = dialog.findViewById(R.id.bg_header_bar);
+        if (builder.headerBackgroundColor != 0)
+            mHeaderBackground.setColorFilter(ContextCompat.getColor(mContext, builder.headerBackgroundColor), android.graphics.PorterDuff.Mode.SRC_IN);
+        mBtnClose = dialog.findViewById(R.id.btn_close);
+        if (builder.closeButtonColor != 0)
+            mBtnClose.setColorFilter(ContextCompat.getColor(mContext, builder.closeButtonColor), android.graphics.PorterDuff.Mode.SRC_IN);
         mRatingBarScale = dialog.findViewById(R.id.rating_bar);
         mBtnSubmit = dialog.findViewById(R.id.btn_submit);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -84,7 +93,7 @@ public class RatingDialog {
                 }
             }
         });
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+        mBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 closeDialog();
@@ -478,7 +487,8 @@ public class RatingDialog {
         }
 
         /**
-         * @param defaultRating - set initial number of stars to display
+         * @param defaultRating - set initial number of stars to display.
+         *                      Value must be greater than or equal to 0 and less than the number of stars or value will default to max and min bounds.
          */
         public Builder setDefaultRating(int defaultRating) {
             this.defaultRating = defaultRating;
