@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -110,16 +111,16 @@ public class RatingDialog {
             mTextTitle.setText(builder.title);
         if (builder.titleColor != 0)
             mTextTitle.setTextColor(ContextCompat.getColor(mContext, builder.titleColor));
-        if (builder.titleFont != null)
-            mTextTitle.setTypeface(builder.titleFont);
+        if (builder.titleFont != 0)
+            mTextTitle.setTypeface(ResourcesCompat.getFont(context, builder.titleFont));
 
         mTextSubtitle = dialog.findViewById(R.id.text_subtitle);
         if (builder.subtitle != null)
             mTextSubtitle.setText(builder.subtitle);
         if (builder.subtitleColor != 0)
             mTextSubtitle.setTextColor(ContextCompat.getColor(mContext, builder.subtitleColor));
-        if (builder.subtitleFont != null)
-            mTextSubtitle.setTypeface(builder.subtitleFont);
+        if (builder.subtitleFont != 0)
+            mTextSubtitle.setTypeface(ResourcesCompat.getFont(context, builder.subtitleFont));
 
         mRatingBarScale = dialog.findViewById(R.id.rating_bar);
         mRatingBarScale.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
@@ -143,8 +144,8 @@ public class RatingDialog {
             mBtnSubmit.setText(builder.submitText);
         if (builder.submitTextColor != 0)
             mBtnSubmit.setTextColor(ContextCompat.getColor(mContext, builder.submitTextColor));
-        if (builder.submitTextFont != null)
-            mBtnSubmit.setTypeface(builder.submitTextFont);
+        if (builder.submitFont != 0)
+            mBtnSubmit.setTypeface(ResourcesCompat.getFont(context, builder.submitFont));
         if (builder.submitButtonRibbonColor != 0) {
             mSubmitButtonRibbonLeft.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
             mSubmitButtonRibbonRight.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -242,18 +243,7 @@ public class RatingDialog {
         }
     }
 
-    public boolean getEnable() {
-        return mSharedPref.getBoolean(RATING_ENABLED, true);
-    }
-
-    public void setEnable(boolean isEnable) {
-        SharedPreferences.Editor editor = mSharedPref.edit();
-        editor.putBoolean(RATING_ENABLED, isEnable);
-        editor.apply();
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public void closeDialog() {
+    private void closeDialog() {
         mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -284,10 +274,28 @@ public class RatingDialog {
 
     private void setRatingHeaderImage(boolean isTrue) {
         if (isTrue) {
-            mRatingHeaderImage.setImageResource(R.drawable.favorite);
+            if (builder.headerImage1Drawable != 0) {
+                mRatingHeaderImage.setImageResource(builder.headerImage1Drawable);
+            } else {
+                mRatingHeaderImage.setImageResource(R.drawable.favorite);
+            }
         } else {
-            mRatingHeaderImage.setImageResource(R.drawable.favorite2);
+            if (builder.headerImage2Drawable != 0) {
+                mRatingHeaderImage.setImageResource(builder.headerImage2Drawable);
+            } else {
+                mRatingHeaderImage.setImageResource(R.drawable.favorite2);
+            }
         }
+    }
+
+    public boolean getEnable() {
+        return mSharedPref.getBoolean(RATING_ENABLED, true);
+    }
+
+    public void setEnable(boolean isEnable) {
+        SharedPreferences.Editor editor = mSharedPref.edit();
+        editor.putBoolean(RATING_ENABLED, isEnable);
+        editor.apply();
     }
 
     public static class Builder implements Parcelable {
@@ -306,11 +314,13 @@ public class RatingDialog {
         private int layoutBackgroundColor;
         private int submitButtonRibbonColor;
 
+        private int headerImage1Drawable;
+        private int headerImage2Drawable;
         private int submitButtonDrawable;
 
-        private Typeface titleFont;
-        private Typeface subtitleFont;
-        private Typeface submitTextFont;
+        private int titleFont;
+        private int subtitleFont;
+        private int submitFont;
 
         private int defaultRating = 0;
 
@@ -339,7 +349,12 @@ public class RatingDialog {
             dest.writeInt(this.closeButtonColor);
             dest.writeInt(this.layoutBackgroundColor);
             dest.writeInt(this.submitButtonRibbonColor);
+            dest.writeInt(this.headerImage1Drawable);
+            dest.writeInt(this.headerImage2Drawable);
             dest.writeInt(this.submitButtonDrawable);
+            dest.writeInt(this.titleFont);
+            dest.writeInt(this.subtitleFont);
+            dest.writeInt(this.submitFont);
             dest.writeInt(this.defaultRating);
             dest.writeByte((byte) (cancelable ? 1 : 0));
             dest.writeInt(gravity);
@@ -358,6 +373,8 @@ public class RatingDialog {
             this.closeButtonColor = in.readInt();
             this.layoutBackgroundColor = in.readInt();
             this.submitButtonRibbonColor = in.readInt();
+            this.headerImage1Drawable = in.readInt();
+            this.headerImage2Drawable = in.readInt();
             this.submitButtonDrawable = in.readInt();
             this.defaultRating = in.readInt();
             cancelable = in.readByte() != 0;
@@ -505,6 +522,28 @@ public class RatingDialog {
         }
 
         /**
+         * @param headerImage1Drawable - set happy header image drawable.
+         */
+        public Builder setHeaderImage1Drawable(int headerImage1Drawable) {
+            this.headerImage1Drawable = headerImage1Drawable;
+            return this;
+        }
+        public int getHeaderImage1Drawable() {
+            return headerImage1Drawable;
+        }
+
+        /**
+         * @param headerImage2Drawable - set submit button drawable.
+         */
+        public Builder setHeaderImage2Drawable(int headerImage2Drawable) {
+            this.headerImage2Drawable = headerImage2Drawable;
+            return this;
+        }
+        public int getHeaderImage2Drawable() {
+            return headerImage2Drawable;
+        }
+
+        /**
          * @param submitButtonDrawable - set submit button drawable.
          */
         public Builder setSubmitButtonDrawable(int submitButtonDrawable) {
@@ -516,36 +555,36 @@ public class RatingDialog {
         }
 
         /**
-         * @param titleFontPath - set title text font. Must pass the path to the font in the assets folder.
+         * @param titleFontPath - set title text font as font resource.
          */
-        public Builder setTitleFont(String titleFontPath) {
-            this.titleFont = Typeface.createFromAsset(context.getAssets(), titleFontPath);
+        public Builder setTitleFont(int titleFontPath) {
+            this.titleFont = titleFontPath;
             return this;
         }
-        public Typeface getTitleFont() {
+        public int getTitleFont() {
             return titleFont;
         }
 
         /**
-         * @param subtitleFontPath - set subtitle text font. Must pass the path to the font in the assets folder.
+         * @param subtitleFontPath - set subtitle text font as font resource.
          */
-        public Builder setSubtitleFont(String subtitleFontPath) {
-            this.subtitleFont = Typeface.createFromAsset(context.getAssets(), subtitleFontPath);
+        public Builder setSubtitleFont(int subtitleFontPath) {
+            this.subtitleFont = subtitleFontPath;
             return this;
         }
-        public Typeface getSubtitleFont() {
+        public int getSubtitleFont() {
             return subtitleFont;
         }
 
         /**
-         * @param submitTextFont - set positive button text typeface.
+         * @param submitFont - set positive button text font as font resource.
          */
-        public Builder setSubmitTextFont(String submitTextFont) {
-            this.submitTextFont = Typeface.createFromAsset(context.getAssets(), submitTextFont);
+        public Builder setSubmitFont(int submitFont) {
+            this.submitFont = submitFont;
             return this;
         }
-        public Typeface getSubmitTextFont() {
-            return submitTextFont;
+        public int getSubmitFont() {
+            return submitFont;
         }
 
         /**

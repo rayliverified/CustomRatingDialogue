@@ -10,4 +10,13 @@
     <color name="light_red">#FF2869</color>
     <color name="medium_red">#e0245e</color>
     <color name="dark_red">#C92154</color>
+
+    <color name="branded_primary">#00a3ad</color>
+    <color name="branded_primary_dark">#1f4b75</color>
+    <color name="branded_primary_medium">#275F94</color>
+    <color name="branded_text_primary">#174672</color>
+    <color name="branded_text_secondary_light">#ae212121</color>
+    <color name="branded_button_normal">#00a3ad</color>
+    <color name="branded_button_normal_dark">#008A94</color>
+    <color name="branded_button_pressed">#21d2ed</color>
 </resources>
