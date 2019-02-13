@@ -54,7 +54,7 @@
 
                 <Button
                     android:id="@+id/btn_action"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -67,12 +67,12 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:background="@drawable/bg_rect_primary_selector"
-                    android:text="Show"
+                    android:text="Default"
                     tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
                 <Button
                     android:id="@+id/btn_action_2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -85,7 +85,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:background="@drawable/bg_rect_primary_selector"
-                    android:text="Show"
+                    android:text="Customized"
                     tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
             </LinearLayout>
         </ScrollView>

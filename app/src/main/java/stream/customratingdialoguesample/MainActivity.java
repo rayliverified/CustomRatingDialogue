@@ -26,7 +26,33 @@ public class MainActivity extends AppCompatActivity {
                 RatingDialog.Builder ratingDialog = new RatingDialog.Builder(MainActivity.this)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
+                            public void onDismiss() {
+                                Log.d("RATELISTERNER", "onDismiss");
+                            }
 
+                            @Override
+                            public void onSubmit(float rating) {
+                                Log.d("RATELISTERNER", "onSubmit " + rating);
+                            }
+
+                            @Override
+                            public void onRatingChanged(float rating) {
+                                Log.d("RATELISTERNER", "onRatingChanged " + rating);
+                            }
+                        })
+                        .build();
+                ratingDialog.show();
+            }
+        });
+        Button mBtnAction2 = findViewById(R.id.btn_action_2);
+        mBtnAction2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RatingDialog.Builder ratingDialog = new RatingDialog.Builder(MainActivity.this)
+                        .setHeaderBackgroundColor(R.color.colorPrimary)
+                        .setCloseButtonColor(android.R.color.white)
+                        .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
+                            @Override
                             public void onDismiss() {
                                 Log.d("RATELISTERNER", "onDismiss");
                             }

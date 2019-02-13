@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -55,44 +57,38 @@ public class RatingDialog {
     private AppCompatImageView mRatingHeaderImage;
     private AppCompatImageView mHeaderBackground;
     private AppCompatImageView mBtnClose;
+    private LinearLayout mLayoutBackground;
+    private TextView mTextTitle;
+    private TextView mTextSubtitle;
     private ScaleRatingBar mRatingBarScale;
     private TextView mBtnSubmit;
+    private AppCompatImageView mSubmitButtonRibbonLeft;
+    private AppCompatImageView mSubmitButtonRibbonRight;
     private boolean isEnable = true;
 
     private RatingDialog(Context context, Builder builderObject) {
         this.builder = builderObject;
         mContext = context;
         mSharedPref = mContext.getSharedPreferences("RATING", MODE_PRIVATE);
+
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_rating);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
+
         mLayoutMain = dialog.findViewById(R.id.layout_dialog_rating);
+
         mRatingHeaderImage = dialog.findViewById(R.id.img_rating_header);
+
         mHeaderBackground = dialog.findViewById(R.id.bg_header_bar);
         if (builder.headerBackgroundColor != 0)
             mHeaderBackground.setColorFilter(ContextCompat.getColor(mContext, builder.headerBackgroundColor), android.graphics.PorterDuff.Mode.SRC_IN);
+
         mBtnClose = dialog.findViewById(R.id.btn_close);
         if (builder.closeButtonColor != 0)
             mBtnClose.setColorFilter(ContextCompat.getColor(mContext, builder.closeButtonColor), android.graphics.PorterDuff.Mode.SRC_IN);
-        mRatingBarScale = dialog.findViewById(R.id.rating_bar);
-        mBtnSubmit = dialog.findViewById(R.id.btn_submit);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                mLayoutMain.setRotation(0);
-                mLayoutMain.setAlpha(0);
-                mLayoutMain.setScaleY(0);
-                mLayoutMain.setScaleX(0);
-                mLayoutMain.clearAnimation();
-                mRatingBarScale.setVisibility(View.INVISIBLE);
-                if (builder.ratingDialogInterface != null) {
-                    builder.ratingDialogInterface.onDismiss();
-                }
-            }
-        });
         mBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +96,27 @@ public class RatingDialog {
             }
         });
 
+        mLayoutBackground = dialog.findViewById(R.id.layout_content);
+        if (builder.layoutBackgroundColor != 0)
+            mLayoutBackground.setBackgroundColor(ContextCompat.getColor(mContext, builder.layoutBackgroundColor));
+
+        mTextTitle = dialog.findViewById(R.id.text_title);
+        if (builder.title != null)
+            mTextTitle.setText(builder.title);
+        if (builder.titleColor != 0)
+            mTextTitle.setTextColor(ContextCompat.getColor(mContext, builder.titleColor));
+        if (builder.titleFont != null)
+            mTextTitle.setTypeface(builder.titleFont);
+
+        mTextSubtitle = dialog.findViewById(R.id.text_subtitle);
+        if (builder.subtitle != null)
+            mTextSubtitle.setText(builder.subtitle);
+        if (builder.subtitleColor != 0)
+            mTextSubtitle.setTextColor(ContextCompat.getColor(mContext, builder.subtitleColor));
+        if (builder.subtitleFont != null)
+            mTextSubtitle.setTypeface(builder.subtitleFont);
+
+        mRatingBarScale = dialog.findViewById(R.id.rating_bar);
         mRatingBarScale.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar ratingBar, float rating) {
@@ -114,6 +131,25 @@ public class RatingDialog {
             }
         });
 
+        mBtnSubmit = dialog.findViewById(R.id.btn_submit);
+        if (builder.submitText != null)
+            mBtnSubmit.setText(builder.submitText);
+        if (builder.submitTextColor != 0)
+            mBtnSubmit.setTextColor(ContextCompat.getColor(mContext, builder.submitTextColor));
+        if (builder.submitFont != null)
+            mBtnSubmit.setTypeface(builder.submitFont);
+        if (builder.submitButtonRibbonColor != 0) {
+            mSubmitButtonRibbonLeft.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
+            mSubmitButtonRibbonRight.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (builder.submitButtonDrawable != 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mBtnSubmit.setBackground(ContextCompat.getDrawable(mContext, builder.submitButtonDrawable));
+            }
+            else {
+                mBtnSubmit.setBackgroundDrawable((ContextCompat.getDrawable(mContext, builder.submitButtonDrawable)));
+            }
+        }
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +179,21 @@ public class RatingDialog {
 
                     }
                 }).start();
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mLayoutMain.setRotation(0);
+                mLayoutMain.setAlpha(0);
+                mLayoutMain.setScaleY(0);
+                mLayoutMain.setScaleX(0);
+                mLayoutMain.clearAnimation();
+                mRatingBarScale.setVisibility(View.INVISIBLE);
+                if (builder.ratingDialogInterface != null) {
+                    builder.ratingDialogInterface.onDismiss();
+                }
             }
         });
     }
