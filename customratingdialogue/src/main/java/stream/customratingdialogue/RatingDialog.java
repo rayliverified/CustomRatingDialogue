@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -22,7 +22,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.ImageViewCompat;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -83,12 +82,18 @@ public class RatingDialog {
         mRatingHeaderImage = dialog.findViewById(R.id.img_rating_header);
 
         mHeaderBackground = dialog.findViewById(R.id.bg_header_bar);
-        if (builder.headerBackgroundColor != 0)
+        if (builder.headerBackgroundColor != 0) {
             mHeaderBackground.setColorFilter(ContextCompat.getColor(mContext, builder.headerBackgroundColor), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else {
+            mHeaderBackground.setColorFilter(Color.parseColor("#34495e"), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
 
         mBtnClose = dialog.findViewById(R.id.btn_close);
-        if (builder.closeButtonColor != 0)
+        if (builder.closeButtonColor != 0) {
             mBtnClose.setColorFilter(ContextCompat.getColor(mContext, builder.closeButtonColor), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else {
+            mBtnClose.setColorFilter(Color.parseColor("#23323F"), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         mBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,15 +137,20 @@ public class RatingDialog {
         });
 
         mBtnSubmit = dialog.findViewById(R.id.btn_submit);
+        mSubmitButtonRibbonLeft = dialog.findViewById(R.id.img_ribbon_left);
+        mSubmitButtonRibbonRight = dialog.findViewById(R.id.img_ribbon_right);
         if (builder.submitText != null)
             mBtnSubmit.setText(builder.submitText);
         if (builder.submitTextColor != 0)
             mBtnSubmit.setTextColor(ContextCompat.getColor(mContext, builder.submitTextColor));
-        if (builder.submitFont != null)
-            mBtnSubmit.setTypeface(builder.submitFont);
+        if (builder.submitTextFont != null)
+            mBtnSubmit.setTypeface(builder.submitTextFont);
         if (builder.submitButtonRibbonColor != 0) {
             mSubmitButtonRibbonLeft.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
             mSubmitButtonRibbonRight.setColorFilter(ContextCompat.getColor(mContext, builder.submitButtonRibbonColor), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else {
+            mSubmitButtonRibbonLeft.setColorFilter(Color.parseColor("#16A085"), android.graphics.PorterDuff.Mode.SRC_IN);
+            mSubmitButtonRibbonRight.setColorFilter(Color.parseColor("#16A085"), android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (builder.submitButtonDrawable != 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -299,7 +309,7 @@ public class RatingDialog {
 
         private Typeface titleFont;
         private Typeface subtitleFont;
-        private Typeface submitFont;
+        private Typeface submitTextFont;
 
         private int defaultRating = 0;
 
@@ -527,14 +537,14 @@ public class RatingDialog {
         }
 
         /**
-         * @param submitFont - set positive button text typeface.
+         * @param submitTextFont - set positive button text typeface.
          */
-        public Builder setSubmitFont(Typeface submitFont) {
-            this.submitFont = submitFont;
+        public Builder setSubmitTextFont(String submitTextFont) {
+            this.submitTextFont = Typeface.createFromAsset(context.getAssets(), submitTextFont);
             return this;
         }
-        public Typeface getSubmitFont() {
-            return submitFont;
+        public Typeface getSubmitTextFont() {
+            return submitTextFont;
         }
 
         /**

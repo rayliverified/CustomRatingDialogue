@@ -13,6 +13,7 @@
     tools:scaleY="1">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_ribbon_left"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="bottom|left"
@@ -21,6 +22,7 @@
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_ribbon_right"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="bottom|right"

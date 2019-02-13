@@ -49,8 +49,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RatingDialog.Builder ratingDialog = new RatingDialog.Builder(MainActivity.this)
-                        .setHeaderBackgroundColor(R.color.colorPrimary)
-                        .setCloseButtonColor(android.R.color.white)
+                        .setHeaderBackgroundColor(R.color.gray_medium)
+                        .setLayoutBackgroundColor(R.color.gray_dark)
+                        .setCloseButtonColor(R.color.gray_light)
+                        .setTitle("How are we doing?")
+                        .setTitleColor(android.R.color.white)
+                        .setTitleFont("museosans500.otf")
+                        .setSubtitle("Touch to Rate")
+                        .setSubtitleColor(android.R.color.white)
+                        .setSubtitleFont("museosans500.otf")
+                        .setSubmitButtonDrawable(R.drawable.bg_submit_custom_selector)
+                        .setSubmitButtonRibbonColor(R.color.dark_red)
+                        .setSubmitText("Submit")
+                        .setSubmitTextColor(android.R.color.white)
+                        .setSubmitTextFont("museosans500.otf")
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
                             public void onDismiss() {
@@ -71,5 +83,29 @@ public class MainActivity extends AppCompatActivity {
                 ratingDialog.show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("MainActivity", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("MainActivity", "onPause");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("MainActivity", "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("MainActivity", "onStop");
     }
 }
