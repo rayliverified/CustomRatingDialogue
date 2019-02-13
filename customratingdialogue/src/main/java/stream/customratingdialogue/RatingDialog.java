@@ -1,7 +1,6 @@
 package stream.customratingdialogue;
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,9 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -30,8 +27,16 @@ public class RatingDialog {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    public enum Style{
+    public enum Style {
         NORMAL
+    }
+
+    public enum AnimateInStyle {
+
+    }
+
+    public enum AnimateOutStyle {
+
     }
 
     public static final String RATING_ENABLED = "RATING_ENABLED";
@@ -52,6 +57,7 @@ public class RatingDialog {
     private boolean isEnable = true;
     private int defRating = 0;
 
+    @SuppressWarnings("WeakerAccess")
     public RatingDialog(Context context) {
         mContext = context;
         mSharedPref = mContext.getSharedPreferences("RATING", MODE_PRIVATE);
@@ -84,7 +90,6 @@ public class RatingDialog {
             @Override
             public void onClick(View view) {
                 closeDialog();
-
             }
         });
 
@@ -133,9 +138,9 @@ public class RatingDialog {
                 }).start();
             }
         });
-
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void showDialog() {
         isEnable = mSharedPref.getBoolean(RATING_ENABLED, true);
         if (isEnable) {
@@ -187,6 +192,7 @@ public class RatingDialog {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void closeDialog() {
         mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
             @Override
@@ -275,6 +281,7 @@ public class RatingDialog {
             dest.writeString(style.toString());
         }
 
+        @SuppressWarnings("WeakerAccess")
         protected Builder(Parcel in) {
             this.title = in.readString();
             this.subtitle = in.readString();
@@ -513,7 +520,7 @@ public class RatingDialog {
          * Display the Dialogue with Builder parameters.
          */
         public void show() {
-            new RatingDialog((Activity) context).showDialog();
+            new RatingDialog(context).showDialog();
         }
     }
 
