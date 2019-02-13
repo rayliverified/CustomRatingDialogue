@@ -46,7 +46,6 @@ public class RatingDialog {
     private Style style = Style.NORMAL;
 
     private SharedPreferences mSharedPref;
-    private RatingDialogInterface mRatingDialogListener;
     private Context mContext;
     private Dialog dialog;
     private FrameLayout mLayoutMain;
@@ -55,10 +54,9 @@ public class RatingDialog {
     private ScaleRatingBar mRatingBarScale;
     private TextView mBtnSubmit;
     private boolean isEnable = true;
-    private int defRating = 0;
 
-    @SuppressWarnings("WeakerAccess")
-    public RatingDialog(Context context) {
+    private RatingDialog(Context context, Builder builderObject) {
+        this.builder = builderObject;
         mContext = context;
         mSharedPref = mContext.getSharedPreferences("RATING", MODE_PRIVATE);
         dialog = new Dialog(mContext);
@@ -81,8 +79,8 @@ public class RatingDialog {
                 mLayoutMain.setScaleX(0);
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
-                if (mRatingDialogListener != null) {
-                    mRatingDialogListener.onDismiss();
+                if (builder.ratingDialogInterface != null) {
+                    builder.ratingDialogInterface.onDismiss();
                 }
             }
         });
@@ -101,8 +99,8 @@ public class RatingDialog {
                 } else {
                     setRatingHeaderImage(true);
                 }
-                if (mRatingDialogListener != null) {
-                    mRatingDialogListener.onRatingChanged(mRatingBarScale.getRating());
+                if (builder.ratingDialogInterface != null) {
+                    builder.ratingDialogInterface.onRatingChanged(mRatingBarScale.getRating());
                 }
             }
         });
@@ -121,8 +119,8 @@ public class RatingDialog {
                         dialog.dismiss();
                         mLayoutMain.clearAnimation();
                         mRatingBarScale.setVisibility(View.INVISIBLE);
-                        if (mRatingDialogListener != null) {
-                            mRatingDialogListener.onSubmit(mRatingBarScale.getRating());
+                        if (builder.ratingDialogInterface != null) {
+                            builder.ratingDialogInterface.onSubmit(mRatingBarScale.getRating());
                         }
                     }
 
@@ -140,13 +138,12 @@ public class RatingDialog {
         });
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public void showDialog() {
+    private void showDialog() {
         isEnable = mSharedPref.getBoolean(RATING_ENABLED, true);
         if (isEnable) {
             dialog.show();
             mRatingBarScale.clearAnimation();
-            mRatingBarScale.setRating(defRating);
+            mRatingBarScale.setRating(builder.defaultRating);
             setRatingHeaderImage(true);
             mLayoutMain.animate().scaleY(1).scaleX(1).rotation(1080).alpha(1).setDuration(600).setListener(new Animator.AnimatorListener() {
                 @Override
@@ -184,14 +181,6 @@ public class RatingDialog {
         editor.apply();
     }
 
-    private void setRatingHeaderImage(boolean isTrue) {
-        if (isTrue) {
-            mRatingHeaderImage.setImageResource(R.drawable.favorite);
-        } else {
-            mRatingHeaderImage.setImageResource(R.drawable.favorite2);
-        }
-    }
-
     @SuppressWarnings("WeakerAccess")
     public void closeDialog() {
         mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
@@ -205,8 +194,8 @@ public class RatingDialog {
                 dialog.dismiss();
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
-                if (mRatingDialogListener != null) {
-                    mRatingDialogListener.onDismiss();
+                if (builder.ratingDialogInterface != null) {
+                    builder.ratingDialogInterface.onDismiss();
                 }
             }
 
@@ -222,15 +211,17 @@ public class RatingDialog {
         }).start();
     }
 
-    public void setDefaultRating(int defaultRating) {
-        this.defRating = defaultRating;
-    }
-
-    public void setRatingDialogListener(RatingDialogInterface mRatingDialogListener) {
-        this.mRatingDialogListener = mRatingDialogListener;
+    private void setRatingHeaderImage(boolean isTrue) {
+        if (isTrue) {
+            mRatingHeaderImage.setImageResource(R.drawable.favorite);
+        } else {
+            mRatingHeaderImage.setImageResource(R.drawable.favorite2);
+        }
     }
 
     public static class Builder implements Parcelable {
+
+        private RatingDialog ratingDialog;
 
         private String title;
         private String subtitle;
@@ -249,6 +240,8 @@ public class RatingDialog {
         private Typeface titleFont;
         private Typeface subtitleFont;
         private Typeface submitFont;
+
+        private int defaultRating = 0;
 
         private RatingDialogInterface ratingDialogInterface;
 
@@ -276,6 +269,7 @@ public class RatingDialog {
             dest.writeInt(this.layoutBackgroundColor);
             dest.writeInt(this.submitButtonRibbonColor);
             dest.writeInt(this.submitButtonDrawable);
+            dest.writeInt(this.defaultRating);
             dest.writeByte((byte) (cancelable ? 1 : 0));
             dest.writeInt(gravity);
             dest.writeString(style.toString());
@@ -294,6 +288,7 @@ public class RatingDialog {
             this.layoutBackgroundColor = in.readInt();
             this.submitButtonRibbonColor = in.readInt();
             this.submitButtonDrawable = in.readInt();
+            this.defaultRating = in.readInt();
             cancelable = in.readByte() != 0;
             gravity = in.readInt();
             style = Style.valueOf(in.readString());
@@ -483,6 +478,17 @@ public class RatingDialog {
         }
 
         /**
+         * @param defaultRating - set initial number of stars to display
+         */
+        public Builder setDefaultRating(int defaultRating) {
+            this.defaultRating = defaultRating;
+            return this;
+        }
+        public int getDefaultRating() {
+            return defaultRating;
+        }
+
+        /**
          * @param ratingDialogInterface - pass a listener to be called.
          */
         public Builder setRatingDialogInterface(RatingDialogInterface ratingDialogInterface) {
@@ -520,7 +526,16 @@ public class RatingDialog {
          * Display the Dialogue with Builder parameters.
          */
         public void show() {
-            new RatingDialog(context).showDialog();
+            ratingDialog = new RatingDialog(context, this);
+            ratingDialog.showDialog();
+        }
+
+        /**
+         * Programmatically close the dialog.
+         */
+        public void dismiss() {
+            if (ratingDialog != null)
+                ratingDialog.closeDialog();
         }
     }
 

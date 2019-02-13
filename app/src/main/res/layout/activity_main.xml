@@ -68,7 +68,25 @@
                     android:gravity="center"
                     android:background="@drawable/bg_rect_primary_selector"
                     android:text="Show"
-                    tools:ignore="SpUsage,UnusedAttribute" />
+                    tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+                <Button
+                    android:id="@+id/btn_action_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:elevation="2dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:background="@drawable/bg_rect_primary_selector"
+                    android:text="Show"
+                    tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
