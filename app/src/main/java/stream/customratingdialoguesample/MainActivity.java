@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         .setSubmitText("Submit")
                         .setSubmitTextColor(android.R.color.white)
                         .setSubmitTextFont("museosans500.otf")
+                        .setCancelable(false)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
                             public void onDismiss() {

@@ -206,6 +206,7 @@ public class RatingDialog {
                 }
             }
         });
+        dialog.setCancelable(builder.cancelable);
     }
 
     private void showDialog() {
