@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
                         .setSubmitText("Submit")
                         .setSubmitTextColor(android.R.color.white)
                         .setSubmitFont(R.font.museosans500)
-                        .setCancelable(false)
+                        .setAnimateInStyle(RatingDialog.AnimateInStyle.SPIN)
+                        .setAnimateOutStyle(RatingDialog.AnimateOutStyle.SPIN)
+                        .setAnimateCloseStyle(RatingDialog.AnimateCloseStyle.SCALE)
+                        .setCancelable(true)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
                             public void onDismiss() {
@@ -106,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                         .setSubmitText("Review")
                         .setSubmitTextColor(android.R.color.white)
                         .setSubmitFont(R.font.sfuitextregular)
-                        .setCancelable(false)
+                        .setAnimateInStyle(RatingDialog.AnimateInStyle.SPIN)
+                        .setAnimateOutStyle(RatingDialog.AnimateOutStyle.SPIN)
+                        .setAnimateCloseStyle(RatingDialog.AnimateCloseStyle.SCALE)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
                             public void onDismiss() {

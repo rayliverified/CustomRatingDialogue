@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -15,6 +14,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,11 +38,18 @@ public class RatingDialog {
     }
 
     public enum AnimateInStyle {
-
+        SCALE,
+        SPIN
     }
 
     public enum AnimateOutStyle {
+        SCALE,
+        SPIN
+    }
 
+    public enum AnimateCloseStyle {
+        SCALE,
+        SPIN
     }
 
     public static final String RATING_ENABLED = "RATING_ENABLED";
@@ -49,6 +57,7 @@ public class RatingDialog {
     public static final String TAG = RatingDialog.class.getSimpleName();
     private Builder builder;
     private Style style = Style.NORMAL;
+    private int rotation = 0;
 
     private SharedPreferences mSharedPref;
     private Context mContext;
@@ -164,32 +173,7 @@ public class RatingDialog {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        dialog.dismiss();
-                        mLayoutMain.clearAnimation();
-                        mRatingBarScale.setVisibility(View.INVISIBLE);
-                        if (builder.ratingDialogInterface != null) {
-                            builder.ratingDialogInterface.onSubmit(mRatingBarScale.getRating());
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                }).start();
+                submitRating();
             }
         });
 
@@ -210,6 +194,60 @@ public class RatingDialog {
         dialog.setCancelable(builder.cancelable);
     }
 
+    private void submitRating() {
+        if (!builder.allowSubmitEmpty && mRatingBarScale.getRating() == 0) {
+            ScaleAnimation scale = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+                    ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                    ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+            scale.setDuration(250);
+            scale.setInterpolator(new DecelerateInterpolator());
+            mRatingBarScale.startAnimation(scale);
+        } else {
+            submitRatingAnimation();
+        }
+    }
+
+    private void submitRatingAnimation() {
+        Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                submitRatingEnd();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        };
+        switch (builder.animateOutStyle) {
+            case SCALE:
+                mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(rotation).setDuration(300).setListener(animatorListener).start();
+                break;
+            case SPIN:
+                mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(rotation - 1080).setDuration(400).setListener(animatorListener).start();
+                break;
+        }
+    }
+
+    private void submitRatingEnd() {
+        mLayoutMain.clearAnimation();
+        mRatingBarScale.setVisibility(View.INVISIBLE);
+        if (builder.ratingDialogInterface != null) {
+            builder.ratingDialogInterface.onSubmit(mRatingBarScale.getRating());
+        }
+        dialog.dismiss();
+    }
+
     private void showDialog() {
         isEnable = mSharedPref.getBoolean(RATING_ENABLED, true);
         if (isEnable) {
@@ -217,34 +255,48 @@ public class RatingDialog {
             mRatingBarScale.clearAnimation();
             mRatingBarScale.setRating(builder.defaultRating);
             setRatingHeaderImage(true);
-            mLayoutMain.animate().scaleY(1).scaleX(1).rotation(1080).alpha(1).setDuration(600).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
+            showDialogAnimation();
+        }
+    }
 
-                }
+    private void showDialogAnimation() {
+        Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    mLayoutMain.clearAnimation();
-                    mRatingBarScale.setVisibility(View.VISIBLE);
-                    mRatingBarScale.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.bounce_amn));
-                }
+            }
 
-                @Override
-                public void onAnimationCancel(Animator animator) {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mLayoutMain.clearAnimation();
+                mRatingBarScale.setVisibility(View.VISIBLE);
+                mRatingBarScale.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.bounce_amn));
+            }
 
-                }
+            @Override
+            public void onAnimationCancel(Animator animator) {
 
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+            }
 
-                }
-            }).start();
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        };
+        switch (builder.animateInStyle) {
+            case SCALE:
+                rotation = 0;
+                mLayoutMain.animate().scaleY(1).scaleX(1).rotation(0).alpha(1).setDuration(400).setListener(animatorListener).start();
+                break;
+            case SPIN:
+                rotation = 1080;
+                mLayoutMain.animate().scaleY(1).scaleX(1).rotation(1080).alpha(1).setDuration(600).setListener(animatorListener).start();
+                break;
         }
     }
 
     private void closeDialog() {
-        mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(-360).setDuration(400).setListener(new Animator.AnimatorListener() {
+        Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -269,7 +321,15 @@ public class RatingDialog {
             public void onAnimationRepeat(Animator animator) {
 
             }
-        }).start();
+        };
+        switch (builder.animateCloseStyle) {
+            case SCALE:
+                mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(rotation).setDuration(300).setListener(animatorListener).start();
+                break;
+            case SPIN:
+                mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(rotation - 1080).setDuration(400).setListener(animatorListener).start();
+                break;
+        }
     }
 
     private void setRatingHeaderImage(boolean isTrue) {
@@ -324,9 +384,13 @@ public class RatingDialog {
 
         private int defaultRating = 0;
 
+        private AnimateInStyle animateInStyle = AnimateInStyle.SCALE;
+        private AnimateOutStyle animateOutStyle = AnimateOutStyle.SCALE;
+        private AnimateCloseStyle animateCloseStyle = AnimateCloseStyle.SCALE;
         private RatingDialogInterface ratingDialogInterface;
 
-        private boolean cancelable = true;
+        private boolean allowSubmitEmpty = false;
+        private boolean cancelable = false;
 
         private Integer gravity = Gravity.CENTER;
         private Style style;
@@ -356,6 +420,10 @@ public class RatingDialog {
             dest.writeInt(this.subtitleFont);
             dest.writeInt(this.submitFont);
             dest.writeInt(this.defaultRating);
+            dest.writeInt(this.animateInStyle.ordinal());
+            dest.writeInt(this.animateOutStyle.ordinal());
+            dest.writeInt(this.animateCloseStyle.ordinal());
+            dest.writeByte((byte) (allowSubmitEmpty ? 1 : 0));
             dest.writeByte((byte) (cancelable ? 1 : 0));
             dest.writeInt(gravity);
             dest.writeString(style.toString());
@@ -377,9 +445,13 @@ public class RatingDialog {
             this.headerImage2Drawable = in.readInt();
             this.submitButtonDrawable = in.readInt();
             this.defaultRating = in.readInt();
-            cancelable = in.readByte() != 0;
-            gravity = in.readInt();
-            style = Style.valueOf(in.readString());
+            this.animateInStyle = AnimateInStyle.values()[in.readInt()];
+            this.animateOutStyle = AnimateOutStyle.values()[in.readInt()];
+            this.animateCloseStyle = AnimateCloseStyle.values()[in.readInt()];
+            this.allowSubmitEmpty = in.readByte() != 0;
+            this.cancelable = in.readByte() != 0;
+            this.gravity = in.readInt();
+            this.style = Style.valueOf(in.readString());
         }
 
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
@@ -600,6 +672,42 @@ public class RatingDialog {
         }
 
         /**
+         * @param animateInStyle - set dialog appearance animation.
+         *                       SCALE, SPIN
+         */
+        public Builder setAnimateInStyle(AnimateInStyle animateInStyle) {
+            this.animateInStyle = animateInStyle;
+            return this;
+        }
+        public AnimateInStyle getAnimateInStyle() {
+            return animateInStyle;
+        }
+
+        /**
+         * @param animateOutStyle - set dialog appearance animation.
+         *                       SCALE, SPOut
+         */
+        public Builder setAnimateOutStyle(AnimateOutStyle animateOutStyle) {
+            this.animateOutStyle = animateOutStyle;
+            return this;
+        }
+        public AnimateOutStyle getAnimateOutStyle() {
+            return animateOutStyle;
+        }
+
+        /**
+         * @param animateCloseStyle - set dialog appearance animation.
+         *                       SCALE, SPIN
+         */
+        public Builder setAnimateCloseStyle(AnimateCloseStyle animateCloseStyle) {
+            this.animateCloseStyle = animateCloseStyle;
+            return this;
+        }
+        public AnimateCloseStyle getAnimateCloseStyle() {
+            return animateCloseStyle;
+        }
+
+        /**
          * @param ratingDialogInterface - pass a listener to be called.
          */
         public Builder setRatingDialogInterface(RatingDialogInterface ratingDialogInterface) {
@@ -611,8 +719,17 @@ public class RatingDialog {
         }
 
         /**
-         * @param cancelable - set false to prevent dialogue dismissal through tapping outside or pressing the back button.
-         *                   Force the user to an choose option.
+         * @param allowSubmitEmpty - set true to allow user to submit without rating. Default false to force user to rate.
+         */
+        public Builder setAllowSubmitEmpty(boolean allowSubmitEmpty) {
+            this.allowSubmitEmpty = allowSubmitEmpty;
+            return this;
+        }
+        public boolean getAllowSubmitEmpty() { return allowSubmitEmpty; }
+
+        /**
+         * @param cancelable - set true to allow dialogue dismissal through tapping outside or pressing the back button.
+         *                   Default false to force the user to an choose option and avoid accidental dismissal.
          */
         public Builder setCancelable(boolean cancelable) {
             this.cancelable = cancelable;
