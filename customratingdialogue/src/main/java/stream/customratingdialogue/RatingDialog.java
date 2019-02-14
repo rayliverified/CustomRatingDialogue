@@ -116,16 +116,26 @@ public class RatingDialog {
             mLayoutBackground.setBackgroundColor(ContextCompat.getColor(mContext, builder.layoutBackgroundColor));
 
         mTextTitle = dialog.findViewById(R.id.text_title);
-        if (builder.title != null)
-            mTextTitle.setText(builder.title);
+        if (builder.title != null) {
+            if (!builder.title.isEmpty()) {
+                mTextTitle.setText(builder.title);
+            } else {
+                mTextTitle.setVisibility(View.GONE);
+            }
+        }
         if (builder.titleColor != 0)
             mTextTitle.setTextColor(ContextCompat.getColor(mContext, builder.titleColor));
         if (builder.titleFont != 0)
             mTextTitle.setTypeface(ResourcesCompat.getFont(context, builder.titleFont));
 
         mTextSubtitle = dialog.findViewById(R.id.text_subtitle);
-        if (builder.subtitle != null)
-            mTextSubtitle.setText(builder.subtitle);
+        if (builder.subtitle != null) {
+            if (!builder.subtitle.isEmpty()) {
+                mTextSubtitle.setText(builder.subtitle);
+            } else {
+                mTextSubtitle.setVisibility(View.GONE);
+            }
+        }
         if (builder.subtitleColor != 0)
             mTextSubtitle.setTextColor(ContextCompat.getColor(mContext, builder.subtitleColor));
         if (builder.subtitleFont != 0)
