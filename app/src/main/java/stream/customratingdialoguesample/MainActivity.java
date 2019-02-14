@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
                 RatingDialog.Builder ratingDialog = new RatingDialog.Builder(MainActivity.this)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
-                            public void onDismiss() {
-                                Log.d("RATELISTERNER", "onDismiss");
+                            public void onDismiss(float rating) {
+                                Log.d("RATELISTERNER", "onDismiss " + rating);
                             }
 
                             @Override
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
-                            public void onDismiss() {
-                                Log.d("RATELISTERNER", "onDismiss");
+                            public void onDismiss(float rating) {
+                                Log.d("RATELISTERNER", "onDismiss " + rating);
                             }
 
                             @Override
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAnimateCloseStyle(RatingDialog.AnimateCloseStyle.SCALE)
                         .setRatingDialogInterface(new RatingDialog.RatingDialogInterface() {
                             @Override
-                            public void onDismiss() {
-                                Log.d("RATELISTERNER", "onDismiss");
+                            public void onDismiss(float rating) {
+                                Log.d("RATELISTERNER", "onDismiss " + rating);
                             }
 
                             @Override

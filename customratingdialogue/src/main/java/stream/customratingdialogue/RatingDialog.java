@@ -197,7 +197,7 @@ public class RatingDialog {
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
                 if (builder.ratingDialogInterface != null) {
-                    builder.ratingDialogInterface.onDismiss();
+                    builder.ratingDialogInterface.onDismiss(mRatingBarScale.getRating());
                 }
             }
         });
@@ -314,12 +314,12 @@ public class RatingDialog {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                dialog.dismiss();
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
                 if (builder.ratingDialogInterface != null) {
-                    builder.ratingDialogInterface.onDismiss();
+                    builder.ratingDialogInterface.onDismiss(mRatingBarScale.getRating());
                 }
+                dialog.dismiss();
             }
 
             @Override
@@ -778,7 +778,7 @@ public class RatingDialog {
     }
 
     public interface RatingDialogInterface {
-        void onDismiss();
+        void onDismiss(float rating);
 
         void onSubmit(float rating);
 
