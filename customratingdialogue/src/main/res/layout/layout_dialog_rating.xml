@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_dialog_rating"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
-            app:srcCompat="@drawable/bg_header"
             android:orientation="vertical"
+            app:srcCompat="@drawable/bg_header"
             tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -62,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bg_header_bar"
-            android:paddingBottom="80dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
             <TextView
                 android:id="@+id/text_title"
@@ -82,9 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="#757575"
                 android:gravity="center"
                 android:text="Rate me!"
+                android:textColor="#757575"
                 android:textSize="18dp"
                 tools:ignore="HardcodedText,SpUsage" />
 
@@ -98,8 +98,8 @@
                 android:gravity="center"
                 android:visibility="invisible"
                 app:rating_starPadding="6dp"
-                tools:visibility="visible"
-                tools:layout_height="50dp"/>
+                tools:layout_height="50dp"
+                tools:visibility="visible" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -109,12 +109,12 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal|bottom"
         android:background="@drawable/bg_submit_selector"
+        android:elevation="0dp"
         android:gravity="center"
         android:text="Review Now"
         android:textColor="#ffffff"
         android:textSize="28dp"
         android:textStyle="bold"
-        android:elevation="0dp"
         tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
     <androidx.appcompat.widget.AppCompatImageView

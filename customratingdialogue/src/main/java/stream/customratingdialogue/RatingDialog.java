@@ -29,36 +29,16 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RatingDialog {
 
+    public static final String RATING_ENABLED = "RATING_ENABLED";
+    public static final String TAG = RatingDialog.class.getSimpleName();
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    public enum Style {
-        NORMAL
-    }
-
-    public enum AnimateInStyle {
-        SCALE,
-        SPIN
-    }
-
-    public enum AnimateOutStyle {
-        SCALE,
-        SPIN
-    }
-
-    public enum AnimateCloseStyle {
-        SCALE,
-        SPIN
-    }
-
-    public static final String RATING_ENABLED = "RATING_ENABLED";
-
-    public static final String TAG = RatingDialog.class.getSimpleName();
     private Builder builder;
     private Style style = Style.NORMAL;
     private int rotation = 0;
-
     private SharedPreferences mSharedPref;
     private Context mContext;
     private Dialog dialog;
@@ -74,7 +54,6 @@ public class RatingDialog {
     private AppCompatImageView mSubmitButtonRibbonLeft;
     private AppCompatImageView mSubmitButtonRibbonRight;
     private boolean isEnable = true;
-
     private RatingDialog(Context context, Builder builderObject) {
         this.builder = builderObject;
         mContext = context;
@@ -175,8 +154,7 @@ public class RatingDialog {
         if (builder.submitButtonDrawable != 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mBtnSubmit.setBackground(ContextCompat.getDrawable(mContext, builder.submitButtonDrawable));
-            }
-            else {
+            } else {
                 mBtnSubmit.setBackgroundDrawable((ContextCompat.getDrawable(mContext, builder.submitButtonDrawable)));
             }
         }
@@ -368,14 +346,50 @@ public class RatingDialog {
         editor.apply();
     }
 
+    public enum Style {
+        NORMAL
+    }
+
+    public enum AnimateInStyle {
+        SCALE,
+        SPIN
+    }
+
+    public enum AnimateOutStyle {
+        SCALE,
+        SPIN
+    }
+
+    public enum AnimateCloseStyle {
+        SCALE,
+        SPIN
+    }
+
+    public interface RatingDialogInterface {
+        void onDismiss(float rating);
+
+        void onSubmit(float rating);
+
+        void onRatingChanged(float rating);
+    }
+
     public static class Builder implements Parcelable {
 
-        private RatingDialog ratingDialog;
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel source) {
+                return new Builder(source);
+            }
 
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
+        private RatingDialog ratingDialog;
         private String title;
         private String subtitle;
         private String submitText;
-
         private int titleColor;
         private int subtitleColor;
         private int submitTextColor;
@@ -383,28 +397,56 @@ public class RatingDialog {
         private int closeButtonColor;
         private int layoutBackgroundColor;
         private int submitButtonRibbonColor;
-
         private int headerImage1Drawable;
         private int headerImage2Drawable;
         private int submitButtonDrawable;
-
         private int titleFont;
         private int subtitleFont;
         private int submitFont;
-
         private int defaultRating = 0;
-
         private AnimateInStyle animateInStyle = AnimateInStyle.SCALE;
         private AnimateOutStyle animateOutStyle = AnimateOutStyle.SCALE;
         private AnimateCloseStyle animateCloseStyle = AnimateCloseStyle.SCALE;
         private RatingDialogInterface ratingDialogInterface;
-
         private boolean allowSubmitEmpty = false;
         private boolean cancelable = false;
-
         private Integer gravity = Gravity.CENTER;
         private Style style;
         private Context context;
+
+        @SuppressWarnings("WeakerAccess")
+        protected Builder(Parcel in) {
+            this.title = in.readString();
+            this.subtitle = in.readString();
+            this.submitText = in.readString();
+            this.titleColor = in.readInt();
+            this.subtitleColor = in.readInt();
+            this.submitTextColor = in.readInt();
+            this.headerBackgroundColor = in.readInt();
+            this.closeButtonColor = in.readInt();
+            this.layoutBackgroundColor = in.readInt();
+            this.submitButtonRibbonColor = in.readInt();
+            this.headerImage1Drawable = in.readInt();
+            this.headerImage2Drawable = in.readInt();
+            this.submitButtonDrawable = in.readInt();
+            this.defaultRating = in.readInt();
+            this.animateInStyle = AnimateInStyle.values()[in.readInt()];
+            this.animateOutStyle = AnimateOutStyle.values()[in.readInt()];
+            this.animateCloseStyle = AnimateCloseStyle.values()[in.readInt()];
+            this.allowSubmitEmpty = in.readByte() != 0;
+            this.cancelable = in.readByte() != 0;
+            this.gravity = in.readInt();
+            this.style = Style.valueOf(in.readString());
+        }
+
+        /**
+         * The Builder dialogue requires an Activity and passing a Context does not work!
+         *
+         * @param context - pass the Dialogue's parent activity.
+         */
+        public Builder(Context context) {
+            this.context = context;
+        }
 
         @Override
         public int describeContents() {
@@ -439,61 +481,34 @@ public class RatingDialog {
             dest.writeString(style.toString());
         }
 
-        @SuppressWarnings("WeakerAccess")
-        protected Builder(Parcel in) {
-            this.title = in.readString();
-            this.subtitle = in.readString();
-            this.submitText = in.readString();
-            this.titleColor = in.readInt();
-            this.subtitleColor = in.readInt();
-            this.submitTextColor = in.readInt();
-            this.headerBackgroundColor = in.readInt();
-            this.closeButtonColor = in.readInt();
-            this.layoutBackgroundColor = in.readInt();
-            this.submitButtonRibbonColor = in.readInt();
-            this.headerImage1Drawable = in.readInt();
-            this.headerImage2Drawable = in.readInt();
-            this.submitButtonDrawable = in.readInt();
-            this.defaultRating = in.readInt();
-            this.animateInStyle = AnimateInStyle.values()[in.readInt()];
-            this.animateOutStyle = AnimateOutStyle.values()[in.readInt()];
-            this.animateCloseStyle = AnimateCloseStyle.values()[in.readInt()];
-            this.allowSubmitEmpty = in.readByte() != 0;
-            this.cancelable = in.readByte() != 0;
-            this.gravity = in.readInt();
-            this.style = Style.valueOf(in.readString());
+        public Style getStyle() {
+            return style;
         }
-
-        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
-            @Override
-            public Builder createFromParcel(Parcel source) {
-                return new Builder(source);
-            }
-
-            @Override
-            public Builder[] newArray(int size) {
-                return new Builder[size];
-            }
-        };
 
         /**
          * @param style - set dialog style.
          */
         public Builder setStyle(Style style) {
-            if(style != null) {
+            if (style != null) {
                 this.style = style;
             }
             return this;
         }
-        public Style getStyle() { return style; }
+
+        public Integer getGravity() {
+            return gravity;
+        }
 
         public Builder setGravity(Integer gravity) {
-            if(gravity != null) {
+            if (gravity != null) {
                 this.gravity = gravity;
             }
             return this;
         }
-        public Integer getGravity() { return gravity; }
+
+        public String getTitle() {
+            return title;
+        }
 
         /**
          * @param title - set title text.
@@ -502,7 +517,10 @@ public class RatingDialog {
             this.title = title;
             return this;
         }
-        public String getTitle() { return title; }
+
+        public String getSubtitle() {
+            return subtitle;
+        }
 
         /**
          * @param subtitle - set subtitle text.
@@ -511,8 +529,9 @@ public class RatingDialog {
             this.subtitle = subtitle;
             return this;
         }
-        public String getSubtitle() {
-            return subtitle;
+
+        public String getSubmitText() {
+            return submitText;
         }
 
         /**
@@ -522,8 +541,9 @@ public class RatingDialog {
             this.submitText = submitText;
             return this;
         }
-        public String getSubmitText() {
-            return submitText;
+
+        public int getTitleColor() {
+            return titleColor;
         }
 
         /**
@@ -533,8 +553,9 @@ public class RatingDialog {
             this.titleColor = titleColor;
             return this;
         }
-        public int getTitleColor() {
-            return titleColor;
+
+        public int getSubtitleColor() {
+            return subtitleColor;
         }
 
         /**
@@ -544,8 +565,9 @@ public class RatingDialog {
             this.subtitleColor = subtitleColor;
             return this;
         }
-        public int getSubtitleColor() {
-            return subtitleColor;
+
+        public int getSubmitTextColor() {
+            return submitTextColor;
         }
 
         /**
@@ -555,8 +577,9 @@ public class RatingDialog {
             this.submitTextColor = positiveTextColor;
             return this;
         }
-        public int getSubmitTextColor() {
-            return submitTextColor;
+
+        public int getHeaderBackgroundColor() {
+            return headerBackgroundColor;
         }
 
         /**
@@ -566,8 +589,9 @@ public class RatingDialog {
             this.headerBackgroundColor = headerBackgroundColor;
             return this;
         }
-        public int getHeaderBackgroundColor() {
-            return headerBackgroundColor;
+
+        public int getCloseButtonColor() {
+            return closeButtonColor;
         }
 
         /**
@@ -577,8 +601,9 @@ public class RatingDialog {
             this.closeButtonColor = closeButtonColor;
             return this;
         }
-        public int getCloseButtonColor() {
-            return closeButtonColor;
+
+        public int getLayoutBackgroundColor() {
+            return layoutBackgroundColor;
         }
 
         /**
@@ -588,8 +613,9 @@ public class RatingDialog {
             this.layoutBackgroundColor = layoutBackgroundColor;
             return this;
         }
-        public int getLayoutBackgroundColor() {
-            return layoutBackgroundColor;
+
+        public int getSubmitButtonRibbonColor() {
+            return submitButtonRibbonColor;
         }
 
         /**
@@ -599,8 +625,9 @@ public class RatingDialog {
             this.submitButtonRibbonColor = submitButtonRibbonColor;
             return this;
         }
-        public int getSubmitButtonRibbonColor() {
-            return submitButtonRibbonColor;
+
+        public int getHeaderImage1Drawable() {
+            return headerImage1Drawable;
         }
 
         /**
@@ -610,8 +637,9 @@ public class RatingDialog {
             this.headerImage1Drawable = headerImage1Drawable;
             return this;
         }
-        public int getHeaderImage1Drawable() {
-            return headerImage1Drawable;
+
+        public int getHeaderImage2Drawable() {
+            return headerImage2Drawable;
         }
 
         /**
@@ -621,8 +649,9 @@ public class RatingDialog {
             this.headerImage2Drawable = headerImage2Drawable;
             return this;
         }
-        public int getHeaderImage2Drawable() {
-            return headerImage2Drawable;
+
+        public int getSubmitButtonDrawable() {
+            return submitButtonDrawable;
         }
 
         /**
@@ -632,8 +661,9 @@ public class RatingDialog {
             this.submitButtonDrawable = submitButtonDrawable;
             return this;
         }
-        public int getSubmitButtonDrawable() {
-            return submitButtonDrawable;
+
+        public int getTitleFont() {
+            return titleFont;
         }
 
         /**
@@ -643,8 +673,9 @@ public class RatingDialog {
             this.titleFont = titleFontPath;
             return this;
         }
-        public int getTitleFont() {
-            return titleFont;
+
+        public int getSubtitleFont() {
+            return subtitleFont;
         }
 
         /**
@@ -654,8 +685,9 @@ public class RatingDialog {
             this.subtitleFont = subtitleFontPath;
             return this;
         }
-        public int getSubtitleFont() {
-            return subtitleFont;
+
+        public int getSubmitFont() {
+            return submitFont;
         }
 
         /**
@@ -665,8 +697,9 @@ public class RatingDialog {
             this.submitFont = submitFont;
             return this;
         }
-        public int getSubmitFont() {
-            return submitFont;
+
+        public int getDefaultRating() {
+            return defaultRating;
         }
 
         /**
@@ -677,8 +710,9 @@ public class RatingDialog {
             this.defaultRating = defaultRating;
             return this;
         }
-        public int getDefaultRating() {
-            return defaultRating;
+
+        public AnimateInStyle getAnimateInStyle() {
+            return animateInStyle;
         }
 
         /**
@@ -689,32 +723,31 @@ public class RatingDialog {
             this.animateInStyle = animateInStyle;
             return this;
         }
-        public AnimateInStyle getAnimateInStyle() {
-            return animateInStyle;
-        }
 
-        /**
-         * @param animateOutStyle - set dialog appearance animation.
-         *                       SCALE, SPOut
-         */
-        public Builder setAnimateOutStyle(AnimateOutStyle animateOutStyle) {
-            this.animateOutStyle = animateOutStyle;
-            return this;
-        }
         public AnimateOutStyle getAnimateOutStyle() {
             return animateOutStyle;
         }
 
         /**
+         * @param animateOutStyle - set dialog appearance animation.
+         *                        SCALE, SPOut
+         */
+        public Builder setAnimateOutStyle(AnimateOutStyle animateOutStyle) {
+            this.animateOutStyle = animateOutStyle;
+            return this;
+        }
+
+        public AnimateCloseStyle getAnimateCloseStyle() {
+            return animateCloseStyle;
+        }
+
+        /**
          * @param animateCloseStyle - set dialog appearance animation.
-         *                       SCALE, SPIN
+         *                          SCALE, SPIN
          */
         public Builder setAnimateCloseStyle(AnimateCloseStyle animateCloseStyle) {
             this.animateCloseStyle = animateCloseStyle;
             return this;
-        }
-        public AnimateCloseStyle getAnimateCloseStyle() {
-            return animateCloseStyle;
         }
 
         /**
@@ -724,8 +757,13 @@ public class RatingDialog {
             this.ratingDialogInterface = ratingDialogInterface;
             return this;
         }
+
         public RatingDialogInterface getOnPositiveClicked() {
             return ratingDialogInterface;
+        }
+
+        public boolean getAllowSubmitEmpty() {
+            return allowSubmitEmpty;
         }
 
         /**
@@ -735,7 +773,10 @@ public class RatingDialog {
             this.allowSubmitEmpty = allowSubmitEmpty;
             return this;
         }
-        public boolean getAllowSubmitEmpty() { return allowSubmitEmpty; }
+
+        public boolean getCancelable() {
+            return cancelable;
+        }
 
         /**
          * @param cancelable - set true to allow dialogue dismissal through tapping outside or pressing the back button.
@@ -745,13 +786,6 @@ public class RatingDialog {
             this.cancelable = cancelable;
             return this;
         }
-        public boolean getCancelable() { return cancelable; }
-
-        /**
-         * The Builder dialogue requires an Activity and passing a Context does not work!
-         * @param context - pass the Dialogue's parent activity.
-         */
-        public Builder(Context context) { this.context = context; }
 
         /**
          * Construct the Dialogue Builder.
@@ -775,13 +809,5 @@ public class RatingDialog {
             if (ratingDialog != null)
                 ratingDialog.closeDialog();
         }
-    }
-
-    public interface RatingDialogInterface {
-        void onDismiss(float rating);
-
-        void onSubmit(float rating);
-
-        void onRatingChanged(float rating);
     }
 }
