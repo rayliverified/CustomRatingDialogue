@@ -29,12 +29,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RatingDialog {
 
-    public static final String RATING_ENABLED = "RATING_ENABLED";
-    public static final String TAG = RatingDialog.class.getSimpleName();
-
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    public static final String TAG = RatingDialog.class.getSimpleName();
+    public static final String RATING_ENABLED = "RATING_ENABLED";
 
     private Builder builder;
     private Style style = Style.NORMAL;
@@ -54,6 +54,8 @@ public class RatingDialog {
     private AppCompatImageView mSubmitButtonRibbonLeft;
     private AppCompatImageView mSubmitButtonRibbonRight;
     private boolean isEnable = true;
+    private boolean overrideDismissListener = false;
+
     private RatingDialog(Context context, Builder builderObject) {
         this.builder = builderObject;
         mContext = context;
@@ -174,7 +176,7 @@ public class RatingDialog {
                 mLayoutMain.setScaleX(0);
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
-                if (builder.ratingDialogInterface != null) {
+                if (!overrideDismissListener && builder.ratingDialogInterface != null) {
                     builder.ratingDialogInterface.onDismiss(mRatingBarScale.getRating());
                 }
             }
@@ -204,7 +206,13 @@ public class RatingDialog {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                submitRatingEnd();
+                overrideDismissListener = true;
+                mLayoutMain.clearAnimation();
+                mRatingBarScale.setVisibility(View.INVISIBLE);
+                if (builder.ratingDialogInterface != null) {
+                    builder.ratingDialogInterface.onSubmit(mRatingBarScale.getRating());
+                }
+                dialog.dismiss();
             }
 
             @Override
@@ -225,15 +233,6 @@ public class RatingDialog {
                 mLayoutMain.animate().scaleY(0).scaleX(0).alpha(0).rotation(rotation - 1080).setDuration(400).setListener(animatorListener).start();
                 break;
         }
-    }
-
-    private void submitRatingEnd() {
-        mLayoutMain.clearAnimation();
-        mRatingBarScale.setVisibility(View.INVISIBLE);
-        if (builder.ratingDialogInterface != null) {
-            builder.ratingDialogInterface.onSubmit(mRatingBarScale.getRating());
-        }
-        dialog.dismiss();
     }
 
     private void showDialog() {
@@ -292,6 +291,7 @@ public class RatingDialog {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                overrideDismissListener = true;
                 mLayoutMain.clearAnimation();
                 mRatingBarScale.setVisibility(View.INVISIBLE);
                 if (builder.ratingDialogInterface != null) {
